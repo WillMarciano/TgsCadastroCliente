@@ -7,8 +7,8 @@ builder.Services.AddApiConfiguration(builder.Configuration);
 builder.Services.AddVersioning();
 builder.Services.AddApiProblemDetails();
 builder.Services.AddSwaggerConfiguration();
-builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.RegisterServices();
+builder.Services.AddAuthentication(builder.Configuration);
 
 var app = builder.Build();
 app.UseSwaggerConfiguration(app.Environment);
