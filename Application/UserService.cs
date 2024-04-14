@@ -33,12 +33,13 @@ namespace Application
             }
         }
 
-        public async Task<UserUpdateDto> CreateAccountAsync(UserDto userDto)
+        public async Task<UserUpdateDto> CreateAccountAsync(UserLoginRegisterDto userRegister)
         {
             try
             {
-                var user = _mapper.Map<User>(userDto);
-                var result = await _userManager.CreateAsync(user, userDto.Password);
+                var user = _mapper.Map<User>(userRegister);
+                user.UserName = userRegister.Email.ToLower();
+                var result = await _userManager.CreateAsync(user, userRegister.Password);
 
                 if (result.Succeeded)
                 {

@@ -8,7 +8,7 @@ namespace Application.Contratos
         Task<bool> UserExists(string username);
         Task<UserUpdateDto> GetUserByUserNameAsync(string username);
         Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password);
-        Task<UserUpdateDto> CreateAccountAsync(UserDto userDto);
+        Task<UserUpdateDto> CreateAccountAsync(UserLoginRegisterDto userRegister);
         Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto);
     }
 }
