@@ -14,11 +14,11 @@ namespace Repository.Contexto
 
         public DbSet<Logradouro> Logradouros { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            modelBuilder.Entity<UserRole>(userRole =>
+            builder.Entity<UserRole>(userRole =>
             {
                 userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
 
@@ -33,7 +33,7 @@ namespace Repository.Contexto
                         .IsRequired();
             });
 
-            modelBuilder.Entity<Cliente>()
+            builder.Entity<Cliente>()
                 .HasMany(c => c.Logradouros)
                 .WithOne(e => e.Cliente)
                 .HasForeignKey(e => e.ClienteId)
