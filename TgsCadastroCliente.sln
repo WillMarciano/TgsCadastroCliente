@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Domain", "2 - Domain", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{E333B903-65C4-45F9-AB62-D139942D379E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{53E95369-349B-4C26-ABA7-488C432D2A87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{FB8343D7-EDD8-4AAC-BBD4-D5686D18F7B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,17 @@ Global
 		{E333B903-65C4-45F9-AB62-D139942D379E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E333B903-65C4-45F9-AB62-D139942D379E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E333B903-65C4-45F9-AB62-D139942D379E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB8343D7-EDD8-4AAC-BBD4-D5686D18F7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB8343D7-EDD8-4AAC-BBD4-D5686D18F7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB8343D7-EDD8-4AAC-BBD4-D5686D18F7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB8343D7-EDD8-4AAC-BBD4-D5686D18F7B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E333B903-65C4-45F9-AB62-D139942D379E} = {FBB58A97-523D-4A9D-9027-FD7CC16460EA}
+		{FB8343D7-EDD8-4AAC-BBD4-D5686D18F7B7} = {53E95369-349B-4C26-ABA7-488C432D2A87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F0BA781A-3DAE-4597-95CA-9972230D4EBE}
