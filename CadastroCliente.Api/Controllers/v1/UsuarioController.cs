@@ -17,7 +17,7 @@ namespace CadastroCliente.Api.Controllers.v1
         private readonly ITokenService _tokenService = tokenService;
 
         /// <summary>
-        /// 
+        /// Busca usuário
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetUser")]
@@ -27,7 +27,16 @@ namespace CadastroCliente.Api.Controllers.v1
             {
                 var userName = User.GetUserName();
                 var user = await _userService.GetUserByUserNameAsync(userName);
-                return Ok(user);
+                if (user == null) return NotFound("Usuário não encontrado!");
+
+                return Ok(
+                new UserUpdateDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Token = _tokenService.CreateToken(user).Result
+                });
             }
             catch (Exception ex)
             {
