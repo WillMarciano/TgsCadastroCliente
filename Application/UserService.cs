@@ -8,7 +8,7 @@ using Repository.Contratos;
 
 namespace Application
 {
-    public class UserService(UserManager<User> userManager, 
+    public class UserService(UserManager<User> userManager,
                              SignInManager<User> signInManager, 
                              IMapper mapper, 
                              IUserRepository userPersist) : IUserService
