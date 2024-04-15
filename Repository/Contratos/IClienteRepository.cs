@@ -2,7 +2,7 @@
 
 namespace Repository.Contratos
 {
-    public interface IClienteRepository
+    public interface IClienteRepository : IGeralRepository
     {
         Task<Cliente?> GetClienteByIdAsync(int clienteId);
     }
