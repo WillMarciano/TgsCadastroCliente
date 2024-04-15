@@ -36,11 +36,11 @@ namespace CadastroCliente.Api.IoC
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<ILogradouroRepository, LogradouroRepository>();
+            services.AddScoped<ILogradouroService, LogradouroService>();
             services.AddScoped<IGeralRepository, GeralRepository>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IClienteService, ClienteService>();
-
-
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Application.Helpers
 
             CreateMap<Cliente, ClienteDto>().ReverseMap();
             CreateMap<Cliente, ClienteUpdateDto>().ReverseMap();
+
+            CreateMap<Logradouro, LogradouroDto>().ReverseMap();
         }
     }
 }

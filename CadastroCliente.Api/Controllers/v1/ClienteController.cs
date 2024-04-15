@@ -18,10 +18,21 @@ namespace CadastroCliente.Api.Controllers.v1
         /// <summary>
         /// Retorna dados do cliente
         /// </summary>
-        /// 
         /// <returns></returns>
-        [HttpGet("GetCliente")]
-        public async Task<IActionResult> GetCliente()
+        /// <response code="200">Cliente recuperado com sucesso</response>
+        /// <response code="201">Cliente não encontrado</response>
+        /// <response code="204">Cliente não encontrado</response>
+        /// <response code="400">Erro ao recuperar cliente</response>
+        /// <response code="401">Erro usuário não autorizado</response>
+        /// <response code="500">Erro ao recuperar cliente</response>
+        [ProducesResponseType(typeof(ClienteDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpGet("Buscar")]
+        public async Task<IActionResult> Buscar()
         {
             try
             {
@@ -36,12 +47,20 @@ namespace CadastroCliente.Api.Controllers.v1
         }
 
         /// <summary>
-        /// Atualiza dados do cliente
+        /// Atualiza dados do nome e logotipo do cliente
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPut("AtualizaCliente")]
-        public async Task<IActionResult> AtualizaCliente(ClienteUpdateDto model)
+        /// <response code="200">Cliente atualizado com sucesso</response>
+        /// <response code="204">Cliente não encontrado</response>
+        /// <response code="401">Erro usuário não autorizado</response>
+        /// <response code="500">Erro ao atualizar cliente</response>
+        [ProducesResponseType(typeof(ClienteDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpPut("Atualizar")]
+        public async Task<IActionResult> Atualizar(ClienteUpdateDto model)
         {
             try
             {

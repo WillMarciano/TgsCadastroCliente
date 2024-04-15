@@ -20,6 +20,17 @@ namespace CadastroCliente.Api.Controllers.v1
         /// Atualiza o token do usuário.
         /// </summary>
         /// <returns></returns>
+        /// <response code="200">Retorna o token atualizado</response>
+        /// <response code="400">Retorna erros de validação</response>
+        /// <response code="401">Erro caso usuário não esteja autorizado</response>
+        /// <response code="404">Usuário não encontrado</response>
+        /// <response code="500">Retorna erros caso ocorram</response>
+
+        [ProducesResponseType(typeof(UserUpdateDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [HttpGet("RefleshToken")]
         public async Task<IActionResult> RefleshToken()
         {
@@ -53,14 +64,12 @@ namespace CadastroCliente.Api.Controllers.v1
         /// <response code="200">Retorna o usuário criado</response>
         /// <response code="400">Retorna erros de validação</response>
         /// <response code="500">Retorna erros caso ocorram</response>
-        /// 
-
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [HttpPost("Register")]
+        [HttpPost("Registrar")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(UserLoginRegisterDto userRegister)
+        public async Task<IActionResult> Registrar(UserLoginRegisterDto userRegister)
         {
             try
             {
