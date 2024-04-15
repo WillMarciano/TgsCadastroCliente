@@ -3,6 +3,6 @@
     public class Base
     {
         public int Id { get; set; }
-        public DateTime DataRegistro { get; set; }
+        public DateTime DataRegistro { get; set; } = DateTime.Now;
     }
 }

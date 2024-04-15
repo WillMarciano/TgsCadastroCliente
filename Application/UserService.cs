@@ -11,12 +11,14 @@ namespace Application
     public class UserService(UserManager<User> userManager,
                              SignInManager<User> signInManager, 
                              IMapper mapper, 
-                             IUserRepository userPersist) : IUserService
+                             IUserRepository userPersist,
+                             IClienteService clienteService) : IUserService
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly SignInManager<User> _signInManager = signInManager;
         private readonly IMapper _mapper = mapper;
         private readonly IUserRepository _userPersist = userPersist;
+        private readonly IClienteService _clienteService = clienteService;
 
         public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password)
         {
@@ -26,6 +28,7 @@ namespace Application
                                              .SingleOrDefaultAsync(user => user.UserName == userUpdateDto.UserName.ToLower());
 
                 return await _signInManager.CheckPasswordSignInAsync(user, password, false);
+                
             }
             catch (Exception ex)
             {
@@ -43,6 +46,7 @@ namespace Application
 
                 if (result.Succeeded)
                 {
+                    CadastraCliente(user);
                     var userToReturn = _mapper.Map<UserUpdateDto>(user);
                     return userToReturn;
                 }
@@ -116,6 +120,19 @@ namespace Application
             {
                 throw new Exception($"Erro ao verificar se usuário existe. Erro: {ex.Message}");
             }
+        }
+
+        private void CadastraCliente(User user)
+        {
+            var cliente = new ClienteDto
+            {
+                Id = user.Id,
+                Nome = user.Email.Substring(0, user.Email.IndexOf("@")),
+                Email = user.Email,
+                Logotipo = null
+            };
+    
+            _clienteService.AddCliente(user.Id, cliente);
         }
     }
 }

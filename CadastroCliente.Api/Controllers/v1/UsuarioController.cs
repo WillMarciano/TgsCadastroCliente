@@ -17,11 +17,11 @@ namespace CadastroCliente.Api.Controllers.v1
         private readonly ITokenService _tokenService = tokenService;
 
         /// <summary>
-        /// Busca usuário
+        /// Atualiza o token do usuário.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetUser")]
-        public async Task<IActionResult> GetUser()
+        [HttpGet("RefleshToken")]
+        public async Task<IActionResult> RefleshToken()
         {
             try
             {

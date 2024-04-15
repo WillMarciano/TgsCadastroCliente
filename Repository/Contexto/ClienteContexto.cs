@@ -33,11 +33,21 @@ namespace Repository.Contexto
                         .IsRequired();
             });
 
-            builder.Entity<Cliente>()
-                .HasMany(c => c.Logradouros)
-                .WithOne(e => e.Cliente)
-                .HasForeignKey(e => e.ClienteId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Logradouro>(logradouro =>
+            {
+                logradouro.HasKey(l => l.Id);
+                logradouro.Property(l => l.Endereco).IsRequired();
+                logradouro.Property(l => l.ClienteId).IsRequired();
+            });
+
+            builder.Entity<Cliente>(cliente =>
+            {
+                cliente.HasKey(c => c.Id);
+                cliente.HasIndex(c => c.Email).IsUnique();
+                cliente.Property(c => c.Nome).IsRequired();
+                cliente.Property(c => c.Email).IsRequired();
+                cliente.HasMany(c => c.Logradouros);
+            });
 
         }
     }

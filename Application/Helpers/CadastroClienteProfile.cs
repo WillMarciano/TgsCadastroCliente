@@ -13,6 +13,9 @@ namespace Application.Helpers
             CreateMap<User, UserLoginDto>().ReverseMap();
             CreateMap<User, UserUpdateDto>().ReverseMap();
             CreateMap<User, UserLoginRegisterDto>().ReverseMap();
+
+            CreateMap<Cliente, ClienteDto>().ReverseMap();
+            CreateMap<Cliente, ClienteUpdateDto>().ReverseMap();
         }
     }
 }

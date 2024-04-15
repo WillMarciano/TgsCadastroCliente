@@ -38,6 +38,8 @@ namespace CadastroCliente.Api.IoC
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IGeralRepository, GeralRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IClienteService, ClienteService>();
+
 
         }
     }
