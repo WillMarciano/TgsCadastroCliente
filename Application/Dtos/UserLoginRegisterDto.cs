@@ -4,6 +4,8 @@ namespace Application.Dtos
 {
     public class UserLoginRegisterDto
     {
+        public string? Nome { get; set; }
+
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O campo {0} é inválido")]
         public string Email { get; set; }

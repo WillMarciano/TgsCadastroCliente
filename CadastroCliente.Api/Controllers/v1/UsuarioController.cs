@@ -80,6 +80,7 @@ namespace CadastroCliente.Api.Controllers.v1
                 if (user != null)
                     return Ok(new
                     {
+                        id = user.Id,
                         userName = user.UserName,
                         email = user.Email,
                         token = _tokenService.CreateToken(user).Result

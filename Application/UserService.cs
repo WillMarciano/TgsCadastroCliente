@@ -41,12 +41,12 @@ namespace Application
             try
             {
                 var user = _mapper.Map<User>(userRegister);
-                user.UserName = userRegister.Email.ToLower();
+                user.UserName = userRegister.Email;
                 var result = await _userManager.CreateAsync(user, userRegister.Password);
 
                 if (result.Succeeded)
                 {
-                    CadastraCliente(user);
+                    CadastraCliente(user, userRegister.Nome);
                     var userToReturn = _mapper.Map<UserUpdateDto>(user);
                     return userToReturn;
                 }
@@ -122,12 +122,12 @@ namespace Application
             }
         }
 
-        private void CadastraCliente(User user)
+        private void CadastraCliente(User user, string nome)
         {
             var cliente = new ClienteDto
             {
                 Id = user.Id,
-                Nome = user.Email.Substring(0, user.Email.IndexOf("@")),
+                Nome = nome,
                 Email = user.Email,
                 Logotipo = null
             };
