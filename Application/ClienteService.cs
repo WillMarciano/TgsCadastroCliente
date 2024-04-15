@@ -32,12 +32,23 @@ namespace Application
             var cliente = await clienteRepository.GetClienteByIdAsync(userId);
             if (cliente == null) return null;
 
+            cliente.Logotipo = model.Logotipo;
+
             clienteRepository.Update(mapper.Map(model, cliente));
 
             if (await clienteRepository.SaveChangesAsync())
                 return mapper.Map<ClienteDto>(await clienteRepository.GetClienteByIdAsync(userId));
 
             return null;
+        }
+
+        public async Task<byte[]> GetCustomerLogo(int id)
+        {
+            var customer = await clienteRepository.GetClienteByIdAsync(id);
+            if (customer == null || customer.Logotipo == null || customer.Logotipo.Length == 0)
+                return null;
+            
+            return customer.Logotipo;
         }
     }
 }
