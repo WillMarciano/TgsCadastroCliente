@@ -36,6 +36,7 @@ namespace CadastroCliente.Api.Controllers.v1
         {
             try
             {
+                var teste = User.GetUserId();
                 var cliente = await clienteService.GetClienteByIdAsync(User.GetUserId());
                 return cliente == null ? NoContent() : Ok(cliente);
             }
@@ -67,7 +68,7 @@ namespace CadastroCliente.Api.Controllers.v1
             {
                 // transforma a imagem em bytes
                 if (uploadedFile != null)
-                    model.Logotipo = GetBytesFromImage(uploadedFile);                
+                    model.Logotipo = GetBytesFromImage(uploadedFile);
 
                 var cliente = await clienteService.UpdateCliente(User.GetUserId(), model);
                 return cliente == null ? NoContent() : Ok(cliente);
