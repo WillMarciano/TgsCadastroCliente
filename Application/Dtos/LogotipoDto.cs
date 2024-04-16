@@ -2,7 +2,7 @@
 
 namespace Application.Dtos
 {
-    public record LogotipoDto
+    public class LogotipoDto
     {
         public byte[]? LogoByte { get; set; }
         public IFormFile? LogoFile { get; set; }

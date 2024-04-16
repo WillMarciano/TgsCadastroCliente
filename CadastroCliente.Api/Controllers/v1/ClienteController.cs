@@ -3,6 +3,7 @@ using Application.Dtos;
 using Asp.Versioning;
 using CadastroCliente.Api.Controllers.Shared;
 using CadastroCliente.Api.Extensions;
+using CadastroCliente.Api.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,10 @@ namespace CadastroCliente.Api.Controllers.v1
     [Authorize]
     [ApiVersion("1.0")]
     [ApiController]
-    public class ClienteController(IClienteService clienteService) : ApiControllerBase
+    public class ClienteController(IClienteService clienteService, IUtil util) : ApiControllerBase
     {
         private const string ERRORRESPONSE = "Erro ao ao tentar * cliente";
+        private const string DESTINO = "Images";
 
 
         /// <summary>
@@ -126,6 +128,7 @@ namespace CadastroCliente.Api.Controllers.v1
         {
             try
             {
+                await util.SaveImage(logotipo.LogoFile!, DESTINO);
                 var cliente = await clienteService.SaveLogoAsync(User.GetUserId(), logotipo);
                 return cliente ? Ok("Logo Salvo com sucesso") : NoContent();
             }

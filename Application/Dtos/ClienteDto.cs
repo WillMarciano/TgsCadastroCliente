@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos
 {
-    public record ClienteDto
+    public class ClienteDto
     {
         public int? Id { get; set; }
         public string? Nome { get; set; }

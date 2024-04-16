@@ -2,7 +2,7 @@
 
 namespace Application.Dtos
 {
-    public record UserLoginRegisterDto
+    public class UserLoginRegisterDto
     {
         public string? Nome { get; set; }
 

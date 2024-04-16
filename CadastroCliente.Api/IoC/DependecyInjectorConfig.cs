@@ -6,6 +6,7 @@ using Repository.Contratos;
 using Repository.Repositorios;
 using Repository.Contexto;
 using Microsoft.EntityFrameworkCore;
+using CadastroCliente.Api.Helpers;
 
 namespace CadastroCliente.Api.IoC
 {
@@ -41,6 +42,7 @@ namespace CadastroCliente.Api.IoC
             services.AddScoped<ILogradouroService, LogradouroService>();
             services.AddScoped<IGeralRepository, GeralRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUtil, Util>();
         }
     }
 }

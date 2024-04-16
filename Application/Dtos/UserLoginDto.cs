@@ -2,7 +2,7 @@
 
 namespace Application.Dtos
 {
-    public record UserLoginDto
+    public class UserLoginDto
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O campo {0} é inválido")]
