@@ -9,5 +9,6 @@ namespace Application.Contratos
         Task<UserUpdateDto> GetUserByUserNameAsync(string userName);
         Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password);
         Task<UserUpdateDto?> CreateAccountAsync(UserLoginRegisterDto userRegister);
+        Task<bool> CadastraCliente(UserUpdateDto user);
     }
 }

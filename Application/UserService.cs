@@ -14,14 +14,15 @@ namespace Application
                              IUserRepository userPersist,
                              IClienteService clienteService) : IUserService
     {
+
         public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password)
         {
             try
             {
-                var user = await userManager.Users.SingleOrDefaultAsync(predicate: u => 
-                    u.UserName!.Equals(userUpdateDto.UserName, StringComparison.OrdinalIgnoreCase));
+                var user = await userManager.Users
+                             .SingleOrDefaultAsync(user => user.UserName == userUpdateDto.UserName.ToLower());
 
-                return await signInManager.CheckPasswordSignInAsync(user!, password, false);
+                return await signInManager.CheckPasswordSignInAsync(user, password, false);
 
             }
             catch (Exception ex)
@@ -81,6 +82,25 @@ namespace Application
             }
         }
 
+
+        public async Task<bool> CadastraCliente(UserUpdateDto user)
+        {
+            var u = await userPersist.GetUserByUserNameAsync(user.UserName!);
+            if (u == null) return false;
+
+            var cliente = new ClienteDto
+            {
+                Id = user.Id,
+                Nome = user.Nome,
+                Email = user.Email!,
+                Logotipo = []
+            };
+
+            var r = clienteService.AddClienteAsync(u.Id!, cliente!);
+            return r != null;
+
+        }
+
         private void CadastraCliente(User user, string nome)
         {
             var cliente = new ClienteDto
@@ -93,5 +113,7 @@ namespace Application
 
             clienteService.AddClienteAsync(user.Id, cliente);
         }
+
+
     }
 }

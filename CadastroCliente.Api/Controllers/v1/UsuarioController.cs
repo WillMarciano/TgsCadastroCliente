@@ -119,6 +119,7 @@ namespace CadastroCliente.Api.Controllers.v1
                     return BadRequest("Usuário informado já existe!");
 
                 var user = await userService.CreateAccountAsync(userRegister);
+
                 if (user != null)
                     return Ok(new
                     {
