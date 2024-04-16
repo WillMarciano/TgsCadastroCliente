@@ -47,11 +47,11 @@ namespace CadastroCliente.Api.Configuration
 
         public static void UseSwaggerConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CadastroCliente.Api v1"));
-            }
+            //}
         }
     }
 }
