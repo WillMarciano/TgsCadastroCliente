@@ -9,26 +9,20 @@ using Repository.Contratos;
 namespace Application
 {
     public class UserService(UserManager<User> userManager,
-                             SignInManager<User> signInManager, 
-                             IMapper mapper, 
+                             SignInManager<User> signInManager,
+                             IMapper mapper,
                              IUserRepository userPersist,
                              IClienteService clienteService) : IUserService
     {
-        private readonly UserManager<User> _userManager = userManager;
-        private readonly SignInManager<User> _signInManager = signInManager;
-        private readonly IMapper _mapper = mapper;
-        private readonly IUserRepository _userPersist = userPersist;
-        private readonly IClienteService _clienteService = clienteService;
-
         public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password)
         {
             try
             {
-                var user = await _userManager.Users
-                                             .SingleOrDefaultAsync(user => user.UserName == userUpdateDto.UserName.ToLower());
+                var user = await userManager.Users.SingleOrDefaultAsync(predicate: u => 
+                    u.UserName!.Equals(userUpdateDto.UserName, StringComparison.OrdinalIgnoreCase));
 
-                return await _signInManager.CheckPasswordSignInAsync(user, password, false);
-                
+                return await signInManager.CheckPasswordSignInAsync(user!, password, false);
+
             }
             catch (Exception ex)
             {
@@ -36,24 +30,23 @@ namespace Application
             }
         }
 
-        public async Task<UserUpdateDto> CreateAccountAsync(UserLoginRegisterDto userRegister)
+        public async Task<UserUpdateDto?> CreateAccountAsync(UserLoginRegisterDto userRegister)
         {
             try
             {
-                var user = _mapper.Map<User>(userRegister);
+                var user = mapper.Map<User>(userRegister);
                 user.UserName = userRegister.Email;
-                var result = await _userManager.CreateAsync(user, userRegister.Password);
+                var result = await userManager.CreateAsync(user, userRegister.Password);
 
                 if (result.Succeeded)
                 {
-                    CadastraCliente(user, userRegister.Nome);
-                    var userToReturn = _mapper.Map<UserUpdateDto>(user);
+                    CadastraCliente(user, userRegister.Nome!);
+                    var userToReturn = mapper.Map<UserUpdateDto>(user);
                     return userToReturn;
                 }
-
                 return null;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"Erro ao tentar Criar Usuário. Erro: {ex.Message}");
             }
@@ -63,10 +56,10 @@ namespace Application
         {
             try
             {
-                var user = await _userPersist.GetUserByUserNameAsync(userName);
+                var user = await userPersist.GetUserByUserNameAsync(userName);
                 if (user == null) return null;
 
-                var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
+                var userUpdateDto = mapper.Map<UserUpdateDto>(user);
                 return userUpdateDto;
             }
             catch (System.Exception ex)
@@ -75,48 +68,14 @@ namespace Application
             }
         }
 
-        public async Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto)
+        public async Task<bool> UserExistsAsync(string userName)
         {
             try
             {
-                var user = await _userPersist.GetUserByUserNameAsync(userUpdateDto.UserName);
-                if (user == null) return null;
-
-                userUpdateDto.Id = user.Id;
-
-                _mapper.Map(userUpdateDto, user);
-
-                if (userUpdateDto.Password != null)
-                {
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
-                }
-
-                _userPersist.Update<User>(user);
-
-                if (await _userPersist.SaveChangesAsync())
-                {
-                    var userRetorno = await _userPersist.GetUserByUserNameAsync(user.UserName);
-
-                    return _mapper.Map<UserUpdateDto>(userRetorno);
-                }
-
-                return null;
-            }
-            catch (System.Exception ex)
-            {
-                throw new Exception($"Erro ao tentar atualizar usuário. Erro: {ex.Message}");
-            }
-        }
-
-        public async Task<bool> UserExists(string userName)
-        {
-            try
-            {
-                return await _userManager.Users
+                return await userManager.Users
                                          .AnyAsync(user => user.UserName == userName.ToLower());
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"Erro ao verificar se usuário existe. Erro: {ex.Message}");
             }
@@ -128,11 +87,11 @@ namespace Application
             {
                 Id = user.Id,
                 Nome = nome,
-                Email = user.Email,
-                Logotipo = null
+                Email = user.Email!,
+                Logotipo = []
             };
-    
-            _clienteService.AddCliente(user.Id, cliente);
+
+            clienteService.AddClienteAsync(user.Id, cliente);
         }
     }
 }

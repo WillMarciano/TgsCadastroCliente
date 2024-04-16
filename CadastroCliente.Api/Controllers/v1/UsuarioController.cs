@@ -13,8 +13,7 @@ namespace CadastroCliente.Api.Controllers.v1
     [ApiController]
     public class UsuarioController(IUserService userService, ITokenService tokenService) : ApiControllerBase
     {
-        private readonly IUserService _userService = userService;
-        private readonly ITokenService _tokenService = tokenService;
+        private const string ERRORRESPONSE = "Erro ao ao tentar * usuário";
 
         /// <summary>
         /// Atualiza o token do usuário.
@@ -31,13 +30,13 @@ namespace CadastroCliente.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [HttpGet("RefleshToken")]
-        public async Task<IActionResult> RefleshToken()
+        [HttpGet("AtualizaToken")]
+        public async Task<IActionResult> AtualizaToken()
         {
             try
             {
                 var userName = User.GetUserName();
-                var user = await _userService.GetUserByUserNameAsync(userName);
+                var user = await userService.GetUserByUserNameAsync(userName);
                 if (user == null) return NotFound("Usuário não encontrado!");
 
                 return Ok(
@@ -46,52 +45,13 @@ namespace CadastroCliente.Api.Controllers.v1
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.CreateToken(user).Result
+                    Token = tokenService.CreateTokenAsync(user).Result
                 });
             }
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
                     $"Erro ao tentar recuperar Usuário. Erro: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Realiza o registro de um novo usuário.
-        /// </summary>
-        /// <param name="userRegister"></param>
-        /// <returns></returns>
-        /// <response code="200">Retorna o usuário criado</response>
-        /// <response code="400">Retorna erros de validação</response>
-        /// <response code="500">Retorna erros caso ocorram</response>
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [HttpPost("Registrar")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Registrar(UserLoginRegisterDto userRegister)
-        {
-            try
-            {
-                if (await _userService.UserExists(userRegister.Email))
-                    return BadRequest("Usuário informado já existe!");
-
-                var user = await _userService.CreateAccountAsync(userRegister);
-                if (user != null)
-                    return Ok(new
-                    {
-                        id = user.Id,
-                        userName = user.UserName,
-                        email = user.Email,
-                        token = _tokenService.CreateToken(user).Result
-                    });
-
-                return BadRequest("Usuário não criado, tente novamente mais tarde!");
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar Registrar Usuário. Erro: {ex.Message}");
             }
         }
 
@@ -116,24 +76,67 @@ namespace CadastroCliente.Api.Controllers.v1
         {
             try
             {
-                var user = await _userService.GetUserByUserNameAsync(usuarioLogin.Email);
+                var user = await userService.GetUserByUserNameAsync(usuarioLogin.Email);
                 if (user == null) return Unauthorized("Usuário ou Senha Inválidos");
 
-                var result = await _userService.CheckUserPasswordAsync(user, usuarioLogin.Password);
+                var result = await userService.CheckUserPasswordAsync(user, usuarioLogin.Password);
                 if (!result.Succeeded) return Unauthorized();
 
                 return Ok(new
                 {
                     userName = user.UserName,
                     email = user.Email,
-                    token = _tokenService.CreateToken(user).Result
+                    token = tokenService.CreateTokenAsync(user).Result
                 });
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar realizar Login. Erro: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"{ERRORRESPONSE.Replace("*", "logar o")}: {ex.Message}");
+            }
+
+        }
+
+
+        /// <summary>
+        /// Realiza o registro de um novo usuário.
+        /// </summary>
+        /// <param name="userRegister"></param>
+        /// <returns></returns>
+        /// <response code="200">Retorna o usuário criado</response>
+        /// <response code="400">Retorna erros de validação</response>
+        /// <response code="500">Retorna erros caso ocorram</response>
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpPost("Registrar")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Registrar(UserLoginRegisterDto userRegister)
+        {
+            try
+            {
+                if (await userService.UserExistsAsync(userRegister.Email))
+                    return BadRequest("Usuário informado já existe!");
+
+                var user = await userService.CreateAccountAsync(userRegister);
+                if (user != null)
+                    return Ok(new
+                    {
+                        id = user.Id,
+                        userName = user.UserName,
+                        email = user.Email,
+                        token = tokenService.CreateTokenAsync(user).Result
+                    });
+
+                return BadRequest("Usuário não criado, tente novamente mais tarde!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"{ERRORRESPONSE.Replace("*", "salvar")}: {ex.Message}");
             }
         }
+
+
     }
 }

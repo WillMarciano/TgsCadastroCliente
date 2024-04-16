@@ -27,7 +27,7 @@ namespace Application
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]!));
         }
 
-        public async Task<string> CreateToken(UserUpdateDto userUpdate)
+        public async Task<string> CreateTokenAsync(UserUpdateDto userUpdate)
         {
             var user = _mapper.Map<User>(userUpdate);
 

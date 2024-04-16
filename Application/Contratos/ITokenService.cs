@@ -4,6 +4,6 @@ namespace Application.Contratos
 {
     public interface ITokenService
     {
-        Task<string> CreateToken(UserUpdateDto userUpdate);
+        Task<string> CreateTokenAsync(UserUpdateDto userUpdate);
     }
 }

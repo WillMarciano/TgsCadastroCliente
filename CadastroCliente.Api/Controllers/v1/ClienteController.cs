@@ -11,12 +11,41 @@ namespace CadastroCliente.Api.Controllers.v1
     [Authorize]
     [ApiVersion("1.0")]
     [ApiController]
-    public class ClienteController(IClienteService clienteService, IUserService userService) : ApiControllerBase
+    public class ClienteController(IClienteService clienteService) : ApiControllerBase
     {
         private const string ERRORRESPONSE = "Erro ao ao tentar * cliente";
 
+
         /// <summary>
-        /// Retorna dados do cliente
+        /// Atualiza dados do cliente
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <response code="200">Cliente atualizado com sucesso</response>
+        /// <response code="204">Cliente não encontrado</response>
+        /// <response code="401">Erro usuário não autorizado</response>
+        /// <response code="500">Erro ao atualizar cliente</response>
+        [ProducesResponseType(typeof(ClienteUpdateDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpPut("AtualizarCliente")]
+        public async Task<IActionResult> AtualizarCliente(ClienteUpdateDto model)
+        {
+            try
+            {
+                var cliente = await clienteService.UpdateClienteAsync(User.GetUserId(), model);
+                return cliente == null ? NoContent() : Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"{ERRORRESPONSE.Replace("*", "atualizar")}: {ex.Message}");
+            }
+        }
+        
+        /// <summary>
+        /// Busca os dados do cliente
         /// </summary>
         /// <returns></returns>
         /// <response code="200">Cliente recuperado com sucesso</response>
@@ -31,12 +60,11 @@ namespace CadastroCliente.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [HttpGet("Buscar")]
-        public async Task<IActionResult> Buscar()
+        [HttpGet("BuscarCliente")]
+        public async Task<IActionResult> BuscarCliente()
         {
             try
             {
-                var teste = User.GetUserId();
                 var cliente = await clienteService.GetClienteByIdAsync(User.GetUserId());
                 return cliente == null ? NoContent() : Ok(cliente);
             }
@@ -48,52 +76,7 @@ namespace CadastroCliente.Api.Controllers.v1
         }
 
         /// <summary>
-        /// Atualiza dados do nome e logotipo do cliente
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="uploadedFile"></param>
-        /// <returns></returns>
-        /// <response code="200">Cliente atualizado com sucesso</response>
-        /// <response code="204">Cliente não encontrado</response>
-        /// <response code="401">Erro usuário não autorizado</response>
-        /// <response code="500">Erro ao atualizar cliente</response>
-        [ProducesResponseType(typeof(ClienteUpdateDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [HttpPut("Atualizar")]
-        public async Task<IActionResult> Atualizar([FromForm] ClienteUpdateDto model, IFormFile? uploadedFile)
-        {
-            try
-            {
-                // transforma a imagem em bytes
-                if (uploadedFile != null)
-                    model.Logotipo = GetBytesFromImage(uploadedFile);
-
-                var cliente = await clienteService.UpdateCliente(User.GetUserId(), model);
-                return cliente == null ? NoContent() : Ok(cliente);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"{ERRORRESPONSE.Replace("*", "atualizar")}: {ex.Message}");
-            }
-        }
-
-        private byte[] GetBytesFromImage(IFormFile file)
-        {
-            byte[] fileBytes;
-            using (var ms = new MemoryStream())
-            {
-                file.CopyTo(ms);
-                fileBytes = ms.ToArray();
-            }
-            return fileBytes;
-        }
-
-
-        /// <summary>
-        /// Retorna logotipo do cliente
+        /// Busca Logotipo do CLiente
         /// </summary>
         /// <returns></returns>
         /// <response code="200">Logotipo recuperado com sucesso</response>
@@ -104,12 +87,12 @@ namespace CadastroCliente.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [HttpGet("Logotipo")]
-        public async Task<IActionResult> Logotipo()
+        [HttpGet("BuscarLogotipo")]
+        public async Task<IActionResult> BuscarLogotipo()
         {
             try
             {
-                var logo = await clienteService.GetCustomerLogo(User.GetUserId());
+                var logo = await clienteService.GetLogoAsync(User.GetUserId());
                 if (logo == null || logo.Length == 0)
                     return NoContent();
 
@@ -122,6 +105,34 @@ namespace CadastroCliente.Api.Controllers.v1
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                        $"{ERRORRESPONSE.Replace("*", "recuperar")}: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Salva logotipo do cliente
+        /// </summary>
+        /// <param name="logotipo"></param>
+        /// <returns></returns>
+        /// <response code="200">Cliente atualizado com sucesso</response>
+        /// <response code="204">Cliente não encontrado</response>
+        /// <response code="401">Erro usuário não autorizado</response>
+        /// <response code="500">Erro ao atualizar cliente</response>
+        [ProducesResponseType(typeof(ClienteUpdateDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpPut("SalvarLogotipo")]
+        public async Task<IActionResult> SalvarLogotipo([FromForm] LogotipoDto logotipo)
+        {
+            try
+            {
+                var cliente = await clienteService.SaveLogoAsync(User.GetUserId(), logotipo);
+                return cliente ? Ok("Logo Salvo com sucesso") : NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"{ERRORRESPONSE.Replace("*", "atualizar")}: {ex.Message}");
             }
         }
     }
