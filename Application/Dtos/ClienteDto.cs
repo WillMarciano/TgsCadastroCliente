@@ -1,6 +1,4 @@
-﻿using Domain.Entity;
-
-namespace Application.Dtos
+﻿namespace Application.Dtos
 {
     public record ClienteDto
     {
@@ -8,7 +6,7 @@ namespace Application.Dtos
         public string? Nome { get; set; }
         public string? Email { get; set; }
         public byte[]? Logotipo { get; set; } 
-        public List<Logradouro>? Logradouros { get; set; }
+        public List<LogradouroDto>? Logradouros { get; set; }
         public DateTime? DataRegistro { get; set; }
     }
 }
