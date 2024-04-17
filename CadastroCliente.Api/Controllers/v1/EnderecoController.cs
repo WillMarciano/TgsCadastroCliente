@@ -17,34 +17,6 @@ namespace CadastroCliente.Api.Controllers.v1
         private const string ERRORRESPONSE = "Erro ao tentar * endereço";
 
         /// <summary>
-        /// Atualiza Lista de endereços
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        /// <response code="200">Retorna a lista de endereços</response>
-        /// <response code="204">Retorna caso não tenha endereços</response>
-        /// <response code="401">Retorna caso não esteja autenticado</response>
-        /// <response code="500">Retorna caso ocorra um erro interno</response>
-        [ProducesResponseType(typeof(ClienteDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpPut("AtualizarLista")]
-        public async Task<IActionResult> AtualizarLista(List<LogradouroDto> model)
-        {
-            try
-            {
-                var endereco = await logradouroService.SaveLogradourosAsync(User.GetUserId(), model);
-                return endereco == null ? NoContent() : Ok(endereco);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"{ERRORRESPONSE.Replace("*", "atualizar")}: {ex.Message}");
-            }
-        }
-
-        /// <summary>
         /// Busca lista de endereços do Cliente
         /// </summary>
         /// 
@@ -72,6 +44,35 @@ namespace CadastroCliente.Api.Controllers.v1
                     $"{ERRORRESPONSE.Replace("*", "recuperar")}: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Busca Endeço por Id
+        /// </summary>
+        /// 
+        /// <returns></returns>
+        /// <param name="logradouroId"></param>
+        /// <response code="200">Retorna a lista de endereços</response>
+        /// <response code="204">Retorna caso não tenha endereços</response>
+        /// <response code="401">Retorna caso não esteja autenticado</response>
+        /// <response code="500">Retorna caso ocorra um erro interno</response>
+        [ProducesResponseType(typeof(ClienteDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet("BuscarEndereco/{logradouroId}")]
+        public async Task<IActionResult> BuscarEndereco(int logradouroId)
+        {
+            try
+            {
+                var endereco = await logradouroService.GetLogradouroByIdAsync(User.GetUserId(), logradouroId);
+                return endereco == null ? NoContent() : Ok(endereco);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                       $"{ERRORRESPONSE.Replace("*", "recuperar")}: {ex.Message}");
+            }
+        }   
 
         /// <summary>
         /// Deleta um endereço
