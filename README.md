@@ -74,7 +74,7 @@ Rodar o comando
 ![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/ff8bf084-dc91-4b31-aeb7-828b96a94be0)
 
 
-<b> Rodando aplicação por Docker, abra o terminal ate a pasta TgsCadastroCliente e rode o comando abaixo
+Rodando aplicação por Docker, abra o terminal ate a pasta TgsCadastroCliente e rode o comando abaixo
 Lembrando que é necessário ter o Docker Desktop
 
 
@@ -174,7 +174,7 @@ The [MIT License]() (MIT)
 
 # FrontEnd para Testes
 
-Para realizar os testes via frontend disponiibilzei um app em Angular 16 na qual a esperiencia para tal será mais fluída
+Para realizar os testes via frontend disponiibilzei um app em Angular 16 na qual a esperiencia para tal será mais fluída, necessário ter node para rodar os comandos.
 
 
 baixe o repositorio do projeto
@@ -236,7 +236,7 @@ Obs a logo é um blob salva no banco de dados conforme solicitada na lista troux
 
 ## Cadastrar Logradouros 
 
-Para acessar é só clicar no botão azul Visualiaz Endereços
+Para acessar é só clicar no botão azul Visualizar os Endereços
 
 
 ![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/4dbc7aba-4d72-4646-bb4e-60ffbbf0c41e)
@@ -252,20 +252,3 @@ Para acessar é só clicar no botão azul Visualiaz Endereços
 
 
 ![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/3c95555f-a950-4370-878e-b664e34a7cfd)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
