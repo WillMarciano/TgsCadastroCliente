@@ -86,13 +86,13 @@ namespace CadastroCliente.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpDelete("DeletarEndereco")]
+        [HttpDelete("DeletarEndereco/{logradouroId}")]
         public async Task<IActionResult> DeletarEndereco(int logradouroId)
         {
             try
             {
                 var endereco = await logradouroService.DeleteLogradouro(User.GetUserId(), logradouroId);
-                return endereco ? Ok() : NoContent();
+                return endereco ? Ok(new { message = "Deletado" }) : NoContent();
             }
             catch (Exception ex)
             {
