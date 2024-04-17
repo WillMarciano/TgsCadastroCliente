@@ -8,7 +8,7 @@
             {
                 var imagePath = Path.Combine(hostEnvironment.ContentRootPath, @$"Resources/{folderName}", imageName);
                 if (File.Exists(imagePath))
-                        File.Delete(imagePath);
+                    File.Delete(imagePath);
             }
         }
 
@@ -27,6 +27,15 @@
                 await image.CopyToAsync(fileStream);
             }
             return imageName;
+        }
+
+        public byte[] GetImage(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                file.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
     }
 }

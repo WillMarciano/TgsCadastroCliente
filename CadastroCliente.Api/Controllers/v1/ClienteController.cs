@@ -6,6 +6,7 @@ using CadastroCliente.Api.Extensions;
 using CadastroCliente.Api.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace CadastroCliente.Api.Controllers.v1
 {
@@ -15,8 +16,6 @@ namespace CadastroCliente.Api.Controllers.v1
     public class ClienteController(IClienteService clienteService, IUtil util) : ApiControllerBase
     {
         private const string ERRORRESPONSE = "Erro ao ao tentar * cliente";
-        private const string DESTINO = "Images";
-
 
         /// <summary>
         /// Atualiza dados do cliente
@@ -45,7 +44,7 @@ namespace CadastroCliente.Api.Controllers.v1
                     $"{ERRORRESPONSE.Replace("*", "atualizar")}: {ex.Message}");
             }
         }
-        
+
         /// <summary>
         /// Busca os dados do cliente
         /// </summary>
@@ -111,7 +110,7 @@ namespace CadastroCliente.Api.Controllers.v1
         }
 
         /// <summary>
-        /// Salva logotipo do cliente
+        /// Salva logotipo do cliente por String
         /// </summary>
         /// <param name="logotipo"></param>
         /// <returns></returns>
@@ -128,9 +127,36 @@ namespace CadastroCliente.Api.Controllers.v1
         {
             try
             {
-                await util.SaveImage(logotipo.LogoFile!, DESTINO);
                 var cliente = await clienteService.SaveLogoAsync(User.GetUserId(), logotipo);
                 return cliente ? Ok("Logo Salvo com sucesso") : NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"{ERRORRESPONSE.Replace("*", "atualizar")}: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Salva logotipo do via IFormFile
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        /// <response code="200">Cliente atualizado com sucesso</response>
+        /// <response code="204">Cliente não encontrado</response>
+        /// <response code="401">Erro usuário não autorizado</response>
+        /// <response code="500">Erro ao atualizar cliente</response>
+        [ProducesResponseType(typeof(ClienteUpdateDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpPost("UploadFile")]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        {
+            try
+            {
+                var cliente = await clienteService.SaveLogoAsync(User.GetUserId(), new LogotipoDto { LogoFile = file });
+                return Ok(StatusCode(StatusCodes.Status200OK));
             }
             catch (Exception ex)
             {
