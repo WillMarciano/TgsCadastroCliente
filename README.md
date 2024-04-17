@@ -110,8 +110,12 @@ Após isso rodar o comando baixo
 <br>
 
 ## Resumo
+
+
 <ul>Os métodos da api necessitam de atutenticação, os tokens para essa autenticação são geradas após cadastrar um usuário e toda vez que or logar com esse usuário
 os métodos são essas duas rotas
+
+
 
 ![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/6fc9b0ac-5070-4c34-aa97-5f7b64c20e87)
 
@@ -166,5 +170,102 @@ Back-end:
 ## Licença 
 
 The [MIT License]() (MIT)
+
+
+# FrontEnd para Testes
+
+Para realizar os testes via frontend disponiibilzei um app em Angular 16 na qual a esperiencia para tal será mais fluída
+
+
+baixe o repositorio do projeto
+
+```
+   https://github.com/WillMarciano/cadastroClienteApp.git
+```
+
+após isso va até a pasta cadastroClienteApp e rode os comandos abaixo
+
+
+```
+   npm i --f
+   ng s --o
+```
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/fab1f927-b659-4fee-a066-cbbfa54410d4)
+
+
+abaixo as telas do sistema que contempla todas as funções solicitadas
+
+## Login
+
+Após logar ou cadastrar usuário automaticamente ele já logado na aplicação
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/bf3eb12f-bd01-4054-85c0-e5b595604aac)
+
+
+## Cadastrar Usuario
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/01896222-8612-4e7f-95a8-6fce8f12a5de)
+
+
+## Tela Home
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/f66ce1f4-6dd6-4a5d-8422-7cc404f37087)
+
+
+
+## Cadastro do Cliente
+
+Uma vez que é feito o cadastro do usuário via identity
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/1e5e145c-8eca-47c6-9ce3-1896707f6051)
+
+
+## Editar nome do Cliente
+
+para acessar é só clicar linha que contém os dados do cliente nessa tela, é possivel atualizar o usuário ou a logotipo
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/fc3b96a3-63bd-4d39-8415-f6161c69f193)
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/f129a559-3fa8-44f9-8ab1-fc8ac68921c6)
+
+Obs a logo é um blob salva no banco de dados conforme solicitada na lista trouxe os 10 primeiros caracteres apenás
+
+## Cadastrar Logradouros 
+
+Para acessar é só clicar no botão azul Visualiaz Endereços
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/4dbc7aba-4d72-4646-bb4e-60ffbbf0c41e)
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/310b03ba-cc01-4a2d-bb56-f3ead2b4718d)
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/292c59d6-ca3e-4227-ad51-36d46bd57106)
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/98dd6ff5-f32f-4c39-9bd0-0ddc88c68b8c)
+
+
+![image](https://github.com/WillMarciano/TgsCadastroCliente/assets/34887614/3c95555f-a950-4370-878e-b664e34a7cfd)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
